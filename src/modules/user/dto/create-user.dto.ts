@@ -10,10 +10,6 @@ import {
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
-  id!: string;
-
-  @IsString()
-  @IsNotEmpty()
   name!: string;
 
   @IsEmail({}, { message: 'Invalid email format' })
