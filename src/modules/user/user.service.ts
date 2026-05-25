@@ -47,6 +47,9 @@ export class UserService {
         email: true,
         role: true,
         createdAt: true,
+        profile: {
+          select: { phoneNumber: true, address: true },
+        },
       },
     });
     const total = result.length;
@@ -61,10 +64,30 @@ export class UserService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    return await this.prisma.user.update({
+    const { phoneNumber, address, ...userData } = updateUserDto;
+    const updateUser = await this.prisma.user.update({
       where: { id },
-      data: updateUserDto,
+      data: {
+        ...userData,
+
+        profile: {
+          update: {
+            ...(phoneNumber !== undefined && { phoneNumber }),
+            ...(address !== undefined && { address }),
+          },
+        },
+      },
+      include: {
+        profile: {
+          select: {
+            phoneNumber: true,
+            address: true,
+          },
+        },
+      },
     });
+
+    return updateUser;
   }
 
   async remove(id: string) {

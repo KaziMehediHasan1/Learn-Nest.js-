@@ -15,4 +15,10 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
   @IsString()
   role!: Role;
+
+  @IsString()
+  phoneNumber!: string;
+
+  @IsString()
+  address!: string;
 }
