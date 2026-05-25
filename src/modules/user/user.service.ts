@@ -21,7 +21,16 @@ export class UserService {
       saltRounds,
     );
     const newUser = await this.prisma.user.create({
-      data: { ...createUserDto, password: hashedPassword },
+      data: {
+        ...createUserDto,
+        password: hashedPassword,
+        profile: {
+          create: {
+            address: null,
+            phoneNumber: null,
+          },
+        },
+      },
     });
 
     return {
@@ -31,7 +40,17 @@ export class UserService {
   }
 
   async findAll() {
-    return await this.prisma.user.findMany();
+    const result = await this.prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        createdAt: true,
+      },
+    });
+    const total = result.length;
+    return { result, total, message: 'All Users Fetch Successfully' };
   }
 
   async findOne(id: string) {
