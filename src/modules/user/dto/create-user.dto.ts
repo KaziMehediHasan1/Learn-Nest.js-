@@ -1,4 +1,4 @@
-import { UserRole } from '@prisma/client';
+import { Role } from '@prisma/client';
 import {
   IsEmail,
   IsEnum,
@@ -20,7 +20,7 @@ export class CreateUserDto {
   @MinLength(6, { message: 'Password must be at least 6 characters long' })
   password!: string;
 
-  @IsEnum(UserRole as object, { message: 'Role must be either ADMIN or USER' })
+  @IsEnum(Role as object, { message: 'Role must be either ADMIN or CUSTOMER' })
   @IsNotEmpty()
-  role!: UserRole;
+  role!: Role;
 }
